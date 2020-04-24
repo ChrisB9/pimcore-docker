@@ -1,3 +1,5 @@
+ARG FROM=pluswerk/php-dev:nginx-7.4
+
 FROM golang:1.11-alpine AS golang
 
 RUN apk add --update git && rm /var/cache/apk/*
@@ -38,7 +40,7 @@ RUN git clone https://gitlab.com/wavexx/facedetect.git \
             && cd .. \
             && rm -rf facedetect
 
-FROM pluswerk/php-dev:nginx-7.4 as php
+FROM $FROM as php
 
 COPY --from=golang /go/bin/primitive /usr/local/bin/primitive
 COPY --from=dependencies /usr/local/bin/zopflipng /usr/local/bin/zopflipng
