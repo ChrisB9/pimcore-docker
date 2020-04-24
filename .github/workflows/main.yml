@@ -4,6 +4,11 @@ on:
     branches: [ master ]
 
 jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify current directory
+        run: echo $PWD && ls -la
   build:
     runs-on: ubuntu-latest
     steps:
