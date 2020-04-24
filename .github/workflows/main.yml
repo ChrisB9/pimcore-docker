@@ -15,7 +15,7 @@ jobs:
           repository: chrisb9/pimcore-dev
           tags: 7.4-dev
           build_args: FROM=pluswerk/php-dev:nginx-7.4
-          path: /
+          path: ./../../
       - name: PHP 7.4 - Build and push Docker images
         uses: docker/build-push-action@v1.1.0
         with:
@@ -24,4 +24,4 @@ jobs:
           repository: chrisb9/pimcore-dev
           tags: 7.4
           build_args: FROM=webdevops/php-nginx:7.4
-          path: /
+          path: ./../../
