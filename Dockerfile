@@ -50,7 +50,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     graphviz \
     librsvg2-bin \
     libreoffice \
-    python3-opencv \
     opencv-data \
     jpegoptim \
     libjpeg-dev \
