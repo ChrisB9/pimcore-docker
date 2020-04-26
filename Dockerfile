@@ -29,29 +29,16 @@ RUN cd /tmp && wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download
             && chmod 0755 /usr/bin/wkhtmltoimage \
             && rm -rf wkhtmltox
 
-FROM python:3-buster as python
-
-RUN apt-get update && apt-get install -y git python3-opencv opencv-data && rm -rf /var/lib/apt/lists/*
-
-RUN git clone https://gitlab.com/wavexx/facedetect.git \
-            && pip3 install numpy opencv-python \
-            && cd facedetect \
-            && cp facedetect /usr/local/bin \
-            && cd .. \
-            && rm -rf facedetect
-
 FROM $FROM as php
 
 COPY --from=golang /go/bin/primitive /usr/local/bin/primitive
 COPY --from=dependencies /usr/local/bin/zopflipng /usr/local/bin/zopflipng
 COPY --from=dependencies /usr/local/bin/pngcrush /usr/local/bin/pngcrush
-COPY --from=dependencies /usr/local/bin/jpegoptim /usr/local/bin/jpegoptim
 COPY --from=dependencies /usr/local/bin/pngout /usr/local/bin/pngout
 COPY --from=dependencies /usr/local/bin/advpng /usr/local/bin/advpng
 COPY --from=dependencies /usr/local/bin/cjpeg /usr/local/bin/cjpeg
 COPY --from=dependencies /usr/bin/wkhtmltopdf /usr/bin/wkhtmltopdf
 COPY --from=dependencies /usr/bin/wkhtmltoimage /usr/bin/wkhtmltoimage
-COPY --from=python /usr/local/bin/facedetect /usr/local/bin/facedetect
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     poppler-utils \
@@ -63,8 +50,20 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     graphviz \
     librsvg2-bin \
     libreoffice \
+    python3-opencv \
+    opencv-data \
+    jpegoptim \
+    libjpeg-dev \
+    libjpeg62-turbo-dev \
     # cleanup
     && rm -rf /var/lib/apt/lists/*
+
+RUN cd /tmp && git clone https://gitlab.com/wavexx/facedetect.git \
+            && pip3 install numpy opencv-python \
+            && cd facedetect \
+            && cp facedetect /usr/local/bin \
+            && cd .. \
+            && rm -rf facedetect
 
 RUN docker-service enable postfix
 
