@@ -67,5 +67,7 @@ RUN cd /tmp && git clone https://gitlab.com/wavexx/facedetect.git \
 
 RUN docker-service enable postfix
 
+COPY nginx.conf /opt/docker/etc/nginx/vhost.common.d/00-pimcore.conf
+
 WORKDIR /app/
 
