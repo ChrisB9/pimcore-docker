@@ -63,9 +63,9 @@ RUN cd /tmp \
         && echo "deb-src http://nginx.org/packages/mainline/debian `lsb_release -cs` nginx" >> /etc/apt/sources.list.d/nginx.list \
         && curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add - \
         && apt-key fingerprint ABF5BD827BD9BF62 \
-        && mv /etc/nginx/nginx.conf /tmp/nginx.conf_backup \
-        && apt-get update && apt-get remove -y nginx nginx-full && DEBIAN_FRONTEND=noninteractive apt-get install -q -y nginx \
-        && /tmp/nginx.conf_backup /etc/nginx/nginx.conf \
+#        && mv /etc/nginx/nginx.conf /tmp/nginx.conf_backup \
+        && apt-get update && apt-get remove -y nginx nginx-full && DEBIAN_FRONTEND=noninteractive apt-get install -q -y -o Dpkg::Options::=--force-confdef nginx \
+#        && /tmp/nginx.conf_backup /etc/nginx/nginx.conf \
         && apt source nginx \
         && git clone https://github.com/google/ngx_brotli.git \
         && pushd ngx_brotli \
