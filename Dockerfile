@@ -54,10 +54,14 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     jpegoptim \
     libjpeg-dev \
     libjpeg62-turbo-dev \
+    brotli \
+    nginx-module-brotli \
     # cleanup
     && rm -rf /var/lib/apt/lists/*
 
-RUN cd /tmp && git clone https://gitlab.com/wavexx/facedetect.git \
+RUN cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+            && python3 get-pip.py && rm get-pip.py
+            && git clone https://gitlab.com/wavexx/facedetect.git \
             && pip3 install numpy opencv-python \
             && cd facedetect \
             && cp facedetect /usr/local/bin \
@@ -66,7 +70,7 @@ RUN cd /tmp && git clone https://gitlab.com/wavexx/facedetect.git \
 
 RUN docker-service enable postfix
 
-COPY nginx.conf /opt/docker/etc/nginx/vhost.common.d/00-pimcore.conf
+COPY nginx.conf /opt/docker/etc/nginx/vhost.common.d/00-pimcore.conf_deactivated
 
 WORKDIR /app/
 
