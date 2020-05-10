@@ -55,14 +55,12 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     libjpeg-dev \
     libjpeg62-turbo-dev \
     lsb-release
-
+    
 RUN cd /tmp \
-     && mkdir install-nginx \
-     && cd install-nginx \
-     && tee -a /etc/apt/sources.list.d/nginx.list > /dev/null <<EOT
-deb http://nginx.org/packages/mainline/debian `lsb_release -cs` nginx
-deb-src http://nginx.org/packages/mainline/debian `lsb_release -cs` nginx
-EOT \
+        && mkdir install-nginx \
+        && cd install-nginx \
+        && echo "deb http://nginx.org/packages/mainline/debian `lsb_release -cs` nginx" >> /etc/apt/sources.list.d/nginx.list \
+        && echo "deb-src http://nginx.org/packages/mainline/debian `lsb_release -cs` nginx" >> /etc/apt/sources.list.d/nginx.list \
         && curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add - \
         && apt-key fingerprint ABF5BD827BD9BF62 \
 #        && mv /etc/nginx/nginx.conf /tmp/nginx.conf_backup \
@@ -78,12 +76,9 @@ EOT \
         && ./configure --with-compat --add-dynamic-module=../ngx_brotli \
         && make modules \
         && cp objs/*.so /usr/lib/nginx/modules \
-        && tee -a /etc/nginx/modules-enabled/brotli.conf > /dev/null <<EOT
-load_module modules/ngx_http_brotli_filter_module.so;
-load_module modules/ngx_http_brotli_static_module.so;
-EOT
-
-RUN rm -rf /var/lib/apt/lists/*
+        && echo "load_module modules/ngx_http_brotli_filter_module.so;" >> /etc/apt/sources.list.d/nginx.list \
+        && echo "load_module modules/ngx_http_brotli_static_module.so;" >> /etc/apt/sources.list.d/nginx.list \
+        && rm -rf /var/lib/apt/lists/*
 
 RUN cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
             && python3 get-pip.py \
