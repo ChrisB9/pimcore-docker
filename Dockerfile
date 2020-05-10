@@ -60,7 +60,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     && rm -rf /var/lib/apt/lists/*
 
 RUN cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-            && python3 get-pip.py && rm get-pip.py
+            && python3 get-pip.py \
+            && rm get-pip.py \
             && git clone https://gitlab.com/wavexx/facedetect.git \
             && pip3 install numpy opencv-python \
             && cd facedetect \
