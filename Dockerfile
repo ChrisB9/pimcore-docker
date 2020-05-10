@@ -78,7 +78,7 @@ RUN cd /tmp \
         && cp objs/*.so /usr/lib/nginx/modules \
         && echo "load_module modules/ngx_http_brotli_filter_module.so;" >> /etc/apt/sources.list.d/nginx.list \
         && echo "load_module modules/ngx_http_brotli_static_module.so;" >> /etc/apt/sources.list.d/nginx.list \
-        && rm -rf /var/lib/apt/lists/*
+        && rm -rf /var/lib/apt/lists/* \
         && rm -rf /tmp/install-nginx
 
 RUN cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
