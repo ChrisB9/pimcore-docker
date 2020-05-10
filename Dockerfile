@@ -59,7 +59,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     # cleanup
     && rm -rf /var/lib/apt/lists/*
 
-RUN cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+RUN cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
             && python3 get-pip.py \
             && rm get-pip.py \
             && git clone https://gitlab.com/wavexx/facedetect.git \
