@@ -69,7 +69,8 @@ RUN cd /tmp \
         && cd ngx_brotli \
         && git submodule update --init \
         && cd .. \
-        && apt-get build-dep -y nginx libperl-dev \
+        && apt-get build-dep -y nginx \
+        && apt-get install -y libperl-dev
         && cd nginx-1.* \
         && ./configure \
                 --with-http_ssl_module \
