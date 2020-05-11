@@ -70,7 +70,7 @@ RUN cd /tmp \
         && git submodule update --init \
         && cd .. \
         && apt-get build-dep -y nginx \
-        && apt-get install -y libperl-dev
+        && apt-get install -y libperl-dev \
         && cd nginx-1.* \
         && ./configure \
                 --with-http_ssl_module \
