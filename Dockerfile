@@ -81,9 +81,7 @@ RUN cd /tmp \
         && rm -rf /var/lib/apt/lists/* \
         && rm -rf /tmp/install-nginx
 
-RUN cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-            && python3 get-pip.py \
-            && rm get-pip.py \
+ RUN cd /tmp && apt-get install -y python3-pip \
             && git clone https://gitlab.com/wavexx/facedetect.git \
             && pip3 install numpy opencv-python \
             && cd facedetect \
