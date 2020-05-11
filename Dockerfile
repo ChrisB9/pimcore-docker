@@ -63,21 +63,47 @@ RUN cd /tmp \
         && echo "deb-src http://nginx.org/packages/mainline/debian `lsb_release -cs` nginx" >> /etc/apt/sources.list.d/nginx.list \
         && curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add - \
         && apt-key fingerprint ABF5BD827BD9BF62 \
-#        && mv /etc/nginx/nginx.conf /tmp/nginx.conf_backup \
         && apt-get update && apt-get remove -y nginx nginx-full && DEBIAN_FRONTEND=noninteractive apt-get install -q -y -o Dpkg::Options::=--force-confdef nginx \
-#        && /tmp/nginx.conf_backup /etc/nginx/nginx.conf \
         && apt source nginx \
         && git clone https://github.com/google/ngx_brotli.git \
         && cd ngx_brotli \
         && git submodule update --init \
         && cd .. \
-        && apt-get build-dep -y nginx \
+        && apt-get build-dep -y nginx libperl-dev \
         && cd nginx-1.* \
-        && ./configure --with-compat --add-dynamic-module=../ngx_brotli \
+        && ./configure \
+                --with-http_ssl_module \
+        		--with-http_realip_module \
+        		--with-http_addition_module \
+        		--with-http_sub_module \
+        		--with-http_dav_module \
+        		--with-http_flv_module \
+        		--with-http_mp4_module \
+        		--with-http_gunzip_module \
+        		--with-http_gzip_static_module \
+        		--with-http_random_index_module \
+        		--with-http_secure_link_module \
+        		--with-http_stub_status_module \
+        		--with-http_auth_request_module \
+        		--with-http_perl_module=dynamic \
+        		--with-threads \
+        		--with-stream \
+        		--with-stream_ssl_module \
+        		--with-stream_ssl_preread_module \
+        		--with-stream_realip_module \
+        		--with-http_slice_module \
+        		--with-mail \
+        		--with-mail_ssl_module \
+        		--with-compat \
+        		--with-file-aio \
+        		--with-http_v2_module \
+                --with-compat \
+                --add-dynamic-module=../ngx_brotli \
         && make modules \
         && cp objs/*.so /usr/lib/nginx/modules \
-        && echo "load_module modules/ngx_http_brotli_filter_module.so;" >> /etc/apt/sources.list.d/nginx.list \
-        && echo "load_module modules/ngx_http_brotli_static_module.so;" >> /etc/apt/sources.list.d/nginx.list \
+        && ln -s /usr/lib/nginx/modules /etc/nginx/modules \
+        && echo "load_module modules/ngx_http_brotli_filter_module.so;" >> /etc/nginx/modules-enabled/brotli.conf \
+        && echo "load_module modules/ngx_http_brotli_static_module.so;" >> /etc/nginx/modules-enabled/brotli.conf \
         && rm -rf /var/lib/apt/lists/* \
         && rm -rf /tmp/install-nginx
 
