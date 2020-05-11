@@ -71,7 +71,7 @@ RUN cd /tmp \
         && cd ngx_brotli \
         && git submodule update --init \
         && cd .. \
-        && apt build-dep nginx \
+        && apt-get build-dep -y nginx \
         && cd nginx-1.* \
         && ./configure --with-compat --add-dynamic-module=../ngx_brotli \
         && make modules \
